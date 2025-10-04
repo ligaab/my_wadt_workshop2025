@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>F1 Sacensības</title>
+
+    <!-- jQuery bibliotēka -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,7 +29,6 @@
             top: 20px;
             left: 0;
             height: 80px;
-            transition: left 3s ease-in-out;
         }
 
         #startButton {
@@ -59,43 +62,41 @@
 
     <script>
         const cars = [
-            { id: "car1", name: "Mašīna 1" },
-            { id: "car2", name: "Mašīna 2" },
-            { id: "car3", name: "Mašīna 3" }
+            { id: "#car1", name: "Mašīna 1" },
+            { id: "#car2", name: "Mašīna 2" },
+            { id: "#car3", name: "Mašīna 3" }
         ];
 
-        document.getElementById("startButton").addEventListener("click", () => {
-            document.getElementById("winner").textContent = "";
+        $("#startButton").on("click", () => {
+            $("#winner").text("");
 
             // Atgriež katru auto sākuma pozīcijā
             cars.forEach(car => {
-                const el = document.getElementById(car.id);
-                el.style.transition = "none";
-                el.style.left = "0px";
+                $(car.id).stop(true).css("left", 0);
             });
 
-            // Mazs timeout, lai pārliecinātos, ka pāreja aktivizējas
+            const finishLine = $(window).width() - 150;
+            let results = [];
+
+            cars.forEach(car => {
+                const time = 2000 + Math.random() * 3000; // 2–5 sekundes
+
+                $(car.id).animate(
+                    { left: finishLine },
+                    time,
+                    "linear"
+                );
+
+                results.push({ name: car.name, time });
+            });
+
+            // Atrodi uzvarētāju
+            const winner = results.sort((a, b) => a.time - b.time)[0];
+
+            // Parādi uzvarētāju pēc 5.5 sekundēm
             setTimeout(() => {
-                const finishLine = window.innerWidth - 150; // gala pozīcija (pēc ekrāna platuma)
-                let results = [];
-
-                cars.forEach(car => {
-                    const el = document.getElementById(car.id);
-                    const time = 2000 + Math.random() * 3000; // no 2 līdz 5 sekundēm
-
-                    el.style.transition = `left ${time}ms linear`;
-                    el.style.left = `${finishLine}px`;
-
-                    // Saglabā katras mašīnas laiku
-                    results.push({ name: car.name, time });
-                });
-
-                // Atrodi uzvarētāju
-                const winner = results.sort((a, b) => a.time - b.time)[0];
-                setTimeout(() => {
-                    document.getElementById("winner").textContent = `Uzvarētājs: ${winner.name}! 🏁`;
-                }, 5500); // pēc 5.5 sekundēm parādīt rezultātu
-            }, 100);
+                $("#winner").text(`Uzvarētājs: ${winner.name}! 🏁`);
+            }, 5500);
         });
     </script>
 
