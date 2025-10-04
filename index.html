@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="lv">
 <head>
-    <meta charset="UTF-8">
-    <title>F1 Sacensības</title>
+    <meta charset="UTF-8" />
+    <title>F1 Sacensības - Demo</title>
 
-    <!-- jQuery bibliotēka -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
@@ -29,9 +28,9 @@
             top: 20px;
             left: 0;
             height: 80px;
-            width: auto;     /* saglabā proporcijas */
-            display: block;  /* izvairāmies no liekām atstarpēm */
-            user-select: none; /* lai nevarētu iezīmēt attēlu */
+            width: auto;
+            display: block;
+            user-select: none;
         }
 
         #startButton {
@@ -53,17 +52,20 @@
 </head>
 <body>
 
-    <h1>F1 Sacensības</h1>   
+    <h1>F1 Sacensības - Demo</h1>
 
     <div class="track" id="track1">
-        <img src="ligaab/my_wadt_workshop2025/pictures/car1.avif" class="car" id="car1" alt="Mašīna 1">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Ferrari_SF21_-_2021_Formula_1_World_Champion_Season.jpg/320px-Ferrari_SF21_-_2021_Formula_1_World_Champion_Season.jpg" 
+             class="car" id="car1" alt="Mašīna 1" />
     </div>
     <div class="track" id="track2">
-        <img src="ligaab/my_wadt_workshop2025/pictures/car2.webp" class="car" id="car2" alt="Mašīna 2">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Red_Bull_RB18_%2814659885074%29.jpg/320px-Red_Bull_RB18_%2814659885074%29.jpg" 
+             class="car" id="car2" alt="Mašīna 2" />
     </div>
     <div class="track" id="track3">
-        <img src="ligaab/my_wadt_workshop2025/pictures/car3.webp" class="car" id="car3" alt="Mašīna 3">
-    </div> 
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Mercedes_AMG_F1_W13_E._Ocon_-_2022_Spanish_Grand_Prix.jpg/320px-Mercedes_AMG_F1_W13_E._Ocon_-_2022_Spanish_Grand_Prix.jpg" 
+             class="car" id="car3" alt="Mašīna 3" />
+    </div>
 
     <button id="startButton">Startēt sacensības</button>
 
@@ -79,7 +81,7 @@
         $("#startButton").on("click", () => {
             $("#winner").text("");
 
-            // Atgriež katru auto sākuma pozīcijā un aptur iepriekšējās animācijas, ja tādas ir
+            // Atiestata pozīciju un aptur animācijas
             cars.forEach(car => {
                 $(car.id).stop(true).css("left", 0);
             });
@@ -88,24 +90,19 @@
             let results = [];
 
             cars.forEach(car => {
-                const time = 2000 + Math.random() * 3000; // 2–5 sekundes
+                const time = 2000 + Math.random() * 3000;
 
                 $(car.id).animate(
                     { left: finishLine },
                     time,
-                    "linear",
-                    function() {
-                        // opcija: šeit var darīt kaut ko katram auto finišā, ja vajag
-                    }
+                    "linear"
                 );
 
                 results.push({ name: car.name, time });
             });
 
-            // Atrodi uzvarētāju pēc laikiem
             const winner = results.sort((a, b) => a.time - b.time)[0];
 
-            // Parādi uzvarētāju pēc 5.5 sekundēm
             setTimeout(() => {
                 $("#winner").text(`Uzvarētājs: ${winner.name}! 🏁`);
             }, 5500);
